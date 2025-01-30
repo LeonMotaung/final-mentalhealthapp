@@ -304,7 +304,7 @@ app.post('/submit-journal', async (req, res) => {
 
 
 mongoose
-    .connect('mongodb://localhost:27017/Applications', { useNewUrlParser: true, useUnifiedTopology: true })
+    .connect('mongodb+srv://smetchappy:Egd8lV7C8J5mcymM@backeddb.pmksk.mongodb.net/MentalHealth?retryWrites=true&w=majority&appName=BackedDB', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to the database');
 
