@@ -1,85 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
-    <!-- Tailwind CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="font-poppins bg-gray-100 flex flex-col h-screen">
 
-    <!-- Navbar -->
-    <nav class="bg-teal-700 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-2xl font-semibold">Mental Health Xcellerators</a>
-            <button id="navbar-toggle" class="lg:hidden text-white" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon">
-                    &#9776; <!-- Hamburger icon -->
-                </span>
-            </button>
-            <div id="navbar-menu" class="lg:flex space-x-6 hidden lg:block">
-                <a href="/about-us" class="nav-link">About Us</a>
-                <a href="/contact-us" class="nav-link">Contact Us</a>
-                <a href="/user-profile" class="nav-link">User Profile</a>
-                <a href="/logout" class="nav-link">Log Out</a>
-                <a href="/dashboard" class="nav-link">Dashboard</a>
-                
+<body class="font-poppins bg-teal-100 flex flex-col min-h-screen">
+
+    <!-- Top Navbar -->
+    <nav class="bg-teal-600 text-white">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-xl font-semibold">Mental Health Xcellerators</a>
+                <button id="navbar-toggle" class="lg:hidden text-white" aria-label="Toggle navigation">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <div class="lg:flex hidden space-x-6">
+                    <a href="/about-us" class="hover:text-teal-200">About Us</a>
+                    <a href="/contact-us" class="hover:text-teal-200">Contact Us</a>
+                    <a href="/dashboard" class="hover:text-teal-200">Dashboard</a>
+                    <% if (typeof user !== 'undefined') { %>
+                        <a href="/logout" class="text-white hover:text-teal-200">Log Out</a>
+                    <% } else { %>
+                        <a href="/login" class="text-white hover:text-teal-200">Log In</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="lg:hidden hidden bg-teal-600" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="/about-us" class="text-white hover:text-teal-200">About Us</a>
+                <a href="/contact-us" class="text-white hover:text-teal-200">Contact Us</a>
+                <a href="/dashboard" class="text-white hover:text-teal-200">Dashboard</a>
+                <% if (typeof user !== 'undefined') { %>
+                    <a href="/logout" class="text-white hover:text-teal-200">Log Out</a>
+                <% } else { %>
+                    <a href="/login" class="text-white hover:text-teal-200">Log In</a>
+                <% } %>
             </div>
         </div>
     </nav>
 
-    <!-- Header Section -->
-    <section class="bg-teal-700 text-white py-12 text-center">
-        <h1 class="text-4xl font-bold mb-2">Contact Us</h1>
-        <p class="text-lg">Feel free to reach out with any questions or concerns. We're here to help!</p>
-    </section>
-
     <!-- Main Content -->
-    <main class="container mx-auto mt-12 px-4">
-        <form action="/submit-contact" method="POST" class="bg-white p-8 rounded-lg shadow-md">
+    <main class="container mx-auto px-4 mt-8 mb-8 flex-1">
+        <!-- Header Section -->
+        <section class="bg-teal-600 text-white py-12 text-center rounded-lg shadow-md mb-8">
+            <h1 class="text-3xl font-bold mb-2">Contact Us</h1>
+            <p class="text-teal-100">Feel free to reach out with any questions or concerns. We're here to help!</p>
+        </section>
+
+        <!-- Contact Form -->
+        <form action="/submit-contact" method="POST" class="bg-white p-8 rounded-lg shadow-md max-w-2xl mx-auto">
             <!-- Name Field -->
             <div class="mb-6">
-                <label for="name" class="block text-lg font-medium text-gray-700">Name</label>
-                <input type="text" id="name" name="name" class="form-input mt-2 p-2 w-full border border-teal-400 rounded-md" required placeholder="Enter your name">
+                <label for="name" class="block text-lg font-medium text-teal-800">Name</label>
+                <input type="text" id="name" name="name" 
+                    class="mt-2 p-3 w-full border border-teal-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                    required placeholder="Enter your name">
             </div>
-        
+
             <!-- Email Field -->
             <div class="mb-6">
-                <label for="email" class="block text-lg font-medium text-gray-700">Email</label>
-                <input type="email" id="email" name="email" class="form-input mt-2 p-2 w-full border border-teal-400 rounded-md" required placeholder="Enter your email">
+                <label for="email" class="block text-lg font-medium text-teal-800">Email</label>
+                <input type="email" id="email" name="email" 
+                    class="mt-2 p-3 w-full border border-teal-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                    required placeholder="Enter your email">
             </div>
-        
+
             <!-- Message Field -->
             <div class="mb-6">
-                <label for="message" class="block text-lg font-medium text-gray-700">Message</label>
-                <textarea id="message" name="message" class="form-input mt-2 p-2 w-full border border-teal-400 rounded-md" rows="4" required placeholder="Write your message here"></textarea>
+                <label for="message" class="block text-lg font-medium text-teal-800">Message</label>
+                <textarea id="message" name="message" 
+                    class="mt-2 p-3 w-full border border-teal-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" 
+                    rows="5" required placeholder="Write your message here"></textarea>
             </div>
-        
+
             <!-- Submit Button -->
             <div class="text-center">
-                <button type="submit" class="bg-teal-700 text-white py-2 px-6 rounded-lg hover:bg-teal-800">Submit</button>
+                <button type="submit" 
+                    class="bg-teal-600 text-white py-3 px-8 rounded-lg hover:bg-teal-700 transition duration-200">
+                    Send Message
+                </button>
             </div>
         </form>
-        
     </main>
 
     <!-- Footer -->
-    <footer class="bg-teal-700 text-white py-4 mt-auto text-center">
+    <footer class="bg-teal-600 text-white text-center py-4 mt-8">
         <div class="container mx-auto">
-            <p>&copy; 2024 Your Application. All rights reserved.</p>
+            <p>&copy; 2024 Mental Health Xcellerators. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Tailwind JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Navbar Toggle Script -->
+    <!-- JavaScript -->
     <script>
+        // Navbar Toggle
         document.getElementById('navbar-toggle').addEventListener('click', function() {
-            const navbarMenu = document.getElementById('navbar-menu');
-            navbarMenu.classList.toggle('hidden'); 
-            navbarMenu.classList.toggle('lg:flex'); 
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
         });
     </script>
 </body>

@@ -5,105 +5,219 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <!-- Tailwind CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .cursor-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #2dd4bf;
+            pointer-events: none;
+        }
+
+        .cursor-outline {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #0d9488;
+            pointer-events: none;
+        }
+
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 999;
+            transition: all 0.3s ease-out;
+            mix-blend-mode: difference;
+        }
+
+        .hover-effect:hover ~ .cursor-outline {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: rgba(45, 212, 191, 0.3);
+        }
+
+        .cursor-particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background-color: #99f6e4;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 998;
+            animation: particle-fade 1s forwards;
+        }
+
+        @keyframes particle-fade {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(2); }
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+<body class="font-poppins bg-teal-100 flex flex-col min-h-screen">
+    <!-- Cursor Elements -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
-    <!-- Navbar -->
-    <nav class="bg-teal-700 text-white py-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-2xl font-semibold">Mental Health Xcellerators</a>
-            <button id="navbar-toggle" class="lg:hidden text-white" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon">&#9776;</span>
-            </button>
-            <div id="navbar-menu" class="lg:flex space-x-6 hidden lg:block">
-                <a href="/about-us" class="text-white hover:text-gray-200">About Us</a>
-                <a href="/contact-us" class="text-white hover:text-gray-200">Contact Us</a>
-                <a href="/user-profile" class="text-white hover:text-gray-200">User Profile</a>
-                <a href="/logout" class="text-white hover:text-gray-200">Log Out</a>
+    <!-- Top Navbar -->
+    <nav class="bg-teal-600 text-white">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="/" class="text-xl font-semibold hover-effect">Mental Health Xcellerators</a>
+                <button id="navbar-toggle" class="lg:hidden text-white hover-effect" aria-label="Toggle navigation">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <div class="lg:flex hidden space-x-6">
+                    <a href="/about-us" class="hover:text-teal-200 hover-effect">About Us</a>
+                    <a href="/contact-us" class="hover:text-teal-200 hover-effect">Contact Us</a>
+                    <a href="/user-profile" class="hover:text-teal-200 hover-effect">User Profile</a>
+                    <a href="/logout" class="hover:text-teal-200 hover-effect">Log Out</a>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="lg:hidden hidden bg-teal-600" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="/about-us" class="text-white hover:text-teal-200 hover-effect">About Us</a>
+                <a href="/contact-us" class="text-white hover:text-teal-200 hover-effect">Contact Us</a>
+                <a href="/user-profile" class="text-white hover:text-teal-200 hover-effect">User Profile</a>
+                <a href="/logout" class="text-white hover:text-teal-200 hover-effect">Log Out</a>
             </div>
         </div>
     </nav>
 
-    <!-- Header Section -->
-    <header class="container mt-8 px-4">
-        <h1 class="text-4xl text-teal-700 font-bold">Welcome to Your Dashboard</h1>
-        <p class="text-lg text-gray-700 mt-2"><%= message %></p>
-    </header>
-
     <!-- Main Content -->
-    <main class="flex-1 py-8">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Quiz Card -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <!-- Updated image with specific width and height -->
-                    <img class="w-full h-48 object-cover" src="/images/PHOTO-2024-11-16-02-35-55.jpg" alt="Quiz Image">
-                    <div class="p-4">
-                        <h5 class="text-xl font-semibold text-teal-700">Quiz</h5>
-                        <p class="text-gray-600 mt-2">Take this quiz to be allocated to a group</p>
-                    </div>
-                    <div class="bg-teal-700 p-4">
-                        <a href="/quiz" class="text-white hover:bg-gray-200 px-6 py-2 rounded-full">Go to Quiz</a>
-                    </div>
-                </div>
+    <main class="container mx-auto px-4 mt-8 mb-8 flex-1">
+        <!-- Header Section -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-teal-800 hover-effect">Welcome to Your Dashboard</h1>
+            <p class="text-lg text-teal-600 mt-2"><%= message %></p>
+        </header>
 
-                <!-- Anonymous Page Card -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img class="w-full h-48 object-cover" src="/images/PHOTO-2024-11-16-04-49-10 2.jpg" alt="Anonymous Page Image">
-                    <div class="p-4">
-                        <h5 class="text-xl font-semibold text-teal-700">Anonymous Page</h5>
-                        <p class="text-gray-600 mt-2">Submit your anonymous thoughts and feedback here.</p>
-                    </div>
-                    <div class="bg-teal-700 p-4">
-                        <a href="/journal" class="text-white hover:bg-gray-200 px-6 py-2 rounded-full">Visit Anonymous Page</a>
-                    </div>
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Quiz Card -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-teal-100 hover-effect">
+                <img class="w-full h-48 object-cover" src="/images/PHOTO-2024-11-16-02-35-55.jpg" alt="Quiz">
+                <div class="p-4">
+                    <h5 class="text-xl font-semibold text-teal-800">Quiz</h5>
+                    <p class="text-teal-600 mt-2">Take this quiz to be allocated to a group</p>
                 </div>
-
-                <!-- Activities Card -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img class="w-full h-48 object-cover" src="/images/PHOTO-2024-11-16-04-07-12.jpg" alt="Activities Image">
-                    <div class="p-4">
-                        <h5 class="text-xl font-semibold text-teal-700">Activities</h5>
-                        <p class="text-gray-600 mt-2">Discover and participate in various activities tailored to your interests.</p>
-                    </div>
-                    <div class="bg-teal-700 p-4">
-                        <a href="/activities" class="text-white hover:bg-gray-200 px-6 py-2 rounded-full">See Activities</a>
-                    </div>
+                <div class="bg-teal-600 p-4">
+                    <a href="/quiz" class="block text-center text-white hover:bg-teal-700 py-2 rounded-lg transition duration-200">
+                        Go to Quiz
+                    </a>
                 </div>
+            </div>
 
-                <!-- Resources Card -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img class="w-full h-48 object-cover" src="/images/PHOTO-2024-11-16-06-07-28.jpg" alt="Resources Image">
-                    <div class="p-4">
-                        <h5 class="text-xl font-semibold text-teal-700">Resources</h5>
-                        <p class="text-gray-600 mt-2">Access valuable resources to help you in your learning and personal growth.</p>
-                    </div>
-                    <div class="bg-teal-700 p-4">
-                        <a href="/resources" class="text-white hover:bg-gray-200 px-6 py-2 rounded-full">Explore Resources</a>
-                    </div>
+            <!-- Anonymous Page Card -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-teal-100 hover-effect">
+                <img class="w-full h-48 object-cover" src="/images/PHOTO-2024-11-16-04-49-10 2.jpg" alt="Anonymous">
+                <div class="p-4">
+                    <h5 class="text-xl font-semibold text-teal-800">Anonymous Page</h5>
+                    <p class="text-teal-600 mt-2">Submit your anonymous thoughts and feedback here.</p>
+                </div>
+                <div class="bg-teal-600 p-4">
+                    <a href="/journal" class="block text-center text-white hover:bg-teal-700 py-2 rounded-lg transition duration-200">
+                        Visit Anonymous Page
+                    </a>
+                </div>
+            </div>
+
+            <!-- Activities Card -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-teal-100 hover-effect">
+                <img class="w-full h-48 object-cover" src="/images/PHOTO-2024-11-16-04-07-12.jpg" alt="Activities">
+                <div class="p-4">
+                    <h5 class="text-xl font-semibold text-teal-800">Activities</h5>
+                    <p class="text-teal-600 mt-2">Discover activities tailored to your interests.</p>
+                </div>
+                <div class="bg-teal-600 p-4">
+                    <a href="/activities" class="block text-center text-white hover:bg-teal-700 py-2 rounded-lg transition duration-200">
+                        See Activities
+                    </a>
+                </div>
+            </div>
+
+            <!-- Resources Card -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-teal-100 hover-effect">
+                <img class="w-full h-48 object-cover" src="/images/PHOTO-2024-11-16-06-07-28.jpg" alt="Resources">
+                <div class="p-4">
+                    <h5 class="text-xl font-semibold text-teal-800">Resources</h5>
+                    <p class="text-teal-600 mt-2">Access resources for learning and personal growth.</p>
+                </div>
+                <div class="bg-teal-600 p-4">
+                    <a href="/resources" class="block text-center text-white hover:bg-teal-700 py-2 rounded-lg transition duration-200">
+                        Explore Resources
+                    </a>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-teal-700 py-4 text-white">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2024 Mental Health Xcellerators. All rights reserved. @ POPIA</p>
+    <footer class="bg-teal-600 text-white text-center py-4 mt-8">
+        <div class="container mx-auto">
+            <p>&copy; 2024 Mental Health Xcellerators. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Tailwind JS for responsive navbar toggle -->
+    <!-- JavaScript -->
     <script>
-        document.getElementById('navbar-toggle').addEventListener('click', function () {
-            const navbarMenu = document.getElementById('navbar-menu');
-            navbarMenu.classList.toggle('hidden');
-            navbarMenu.classList.toggle('lg:flex');
+        // Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const particles = [];
+        
+        // Mouse Move Listener
+        window.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = `${e.clientX}px`;
+            cursorDot.style.top = `${e.clientY}px`;
+            
+            cursorOutline.animate({
+                left: `${e.clientX}px`,
+                top: `${e.clientY}px`
+            }, { duration: 500, fill: "forwards" });
+
+            // Add particles
+            if (particles.length < 20) {
+                const particle = document.createElement('div');
+                particle.className = 'cursor-particle';
+                particle.style.left = `${e.clientX}px`;
+                particle.style.top = `${e.clientY}px`;
+                document.body.appendChild(particle);
+                particles.push(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                    particles.shift();
+                }, 1000);
+            }
+        });
+
+        // Hover Effects
+        document.querySelectorAll('.hover-effect').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursorOutline.style.backgroundColor = 'rgba(45, 212, 191, 0.3)';
+            });
+
+            link.addEventListener('mouseleave', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Navbar Toggle
+        document.getElementById('navbar-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
         });
     </script>
 </body>
-
 </html>

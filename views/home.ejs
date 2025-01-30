@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Xcellerators</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-poppins bg-teal-100 flex flex-col min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-teal-600 text-white">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="/" class="text-xl font-semibold">Mental Health Xcellerators</a>
+                <button id="navbar-toggle" class="lg:hidden text-white" aria-label="Toggle navigation">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <div class="lg:flex hidden space-x-6">
+                    <a href="/about-us" class="hover:text-teal-200">About Us</a>
+                    <a href="/contact-us" class="hover:text-teal-200">Contact Us</a>
+                    <a href="/login" class="hover:text-teal-200">Log In</a>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="lg:hidden hidden bg-teal-600" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="/about-us" class="text-white hover:text-teal-200">About Us</a>
+                <a href="/contact-us" class="text-white hover:text-teal-200">Contact Us</a>
+                <a href="/login" class="text-white hover:text-teal-200">Log In</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1">
+        <header class="bg-teal-600 text-white py-20 text-center">
+            <div class="container mx-auto px-6">
+                <h1 class="text-4xl font-bold">Your Mental Well-being Matters</h1>
+                <p class="mt-4 text-lg text-teal-100">Support, Guidance, and Resources for a Healthier Mind</p>
+                <a href="/about-us" class="mt-6 inline-block bg-teal-500 px-6 py-3 rounded-lg text-lg hover:bg-teal-700 transition duration-200">
+                    Learn More
+                </a>
+            </div>
+        </header>
+
+        <section class="container mx-auto my-12 px-6 text-center">
+            <h2 class="text-3xl font-bold text-teal-800">Our Mission</h2>
+            <p class="mt-4 text-teal-600 max-w-2xl mx-auto">
+                To create a supportive space where individuals can find resources, community, and professional guidance for their mental well-being.
+            </p>
+            <img src="/images/mission.jpg" alt="Mission Image" class="mt-6 mx-auto rounded-lg shadow-md w-full max-w-2xl border-4 border-teal-100">
+        </section>
+
+        <section class="container mx-auto my-12 px-6 text-center">
+            <h2 class="text-3xl font-bold text-teal-800">Our Vision</h2>
+            <p class="mt-4 text-teal-600 max-w-2xl mx-auto">
+                A world where mental health is prioritized, and everyone has access to the support they need to thrive.
+            </p>
+            <img src="/images/vision.jpg" alt="Vision Image" class="mt-6 mx-auto rounded-lg shadow-md w-full max-w-2xl border-4 border-teal-100">
+        </section>
+        
+        <section class="container mx-auto my-12 px-6 text-center">
+            <h2 class="text-3xl font-bold text-teal-800">You Are Not Alone</h2>
+            <p class="mt-4 text-teal-600 max-w-2xl mx-auto">
+                Join our community and find strength in shared experiences.
+            </p>
+            <img src="/images/support.jpg" alt="Support Image" class="mt-6 mx-auto rounded-lg shadow-md w-full max-w-2xl border-4 border-teal-100">
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-teal-600 text-white text-center py-8 mt-12">
+        <div class="container mx-auto">
+            <p class="mb-4">&copy; 2024 Mental Health Xcellerators. All rights reserved.</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-6">
+                <a href="/terms" class="hover:text-teal-200">Terms of Service</a>
+                <a href="/privacy" class="hover:text-teal-200">Privacy Policy</a>
+                <a href="/contact" class="hover:text-teal-200">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar Toggle
+        document.getElementById('navbar-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

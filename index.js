@@ -10,6 +10,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+const mongoUri = process.env.MONGODB_URI;
+const sessionSecret = process.env.SESSION_SECRET;
+
+
 // Session configuration
 app.use(
     session({
@@ -283,7 +287,7 @@ const Journal = mongoose.model('Journal', journalSchema);
     }
 });
 app.get('/', (req, res) => {
-    res.render('signup');
+    res.render('home');
 });
 
 app.post('/submit-journal', async (req, res) => {
