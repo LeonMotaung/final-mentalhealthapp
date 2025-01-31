@@ -306,6 +306,31 @@ app.get('/forgot-password', (req, res) => {
     res.render('forgot-password', { user: req.session.user }); // Pass user data to the template
 });
 
+app.post('/forgot-password', async (req, res) => {
+    try {
+      const { email, adminPassword, newPassword } = req.body;
+      
+      // Verify admin password
+      if (adminPassword !== process.env.ADMIN_RESET_PASSWORD) {
+        return res.status(403).json({ error: 'Invalid admin credentials' });
+    }
+      // Find user by email
+      const user = await Applicant.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      // Hash new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+      await user.save();
+  
+      res.status(200).json({ message: 'Password reset successfully' });
+    } catch (error) {
+      console.error('Password reset error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
 mongoose
     .connect('mongodb+srv://smetchappy:Egd8lV7C8J5mcymM@backeddb.pmksk.mongodb.net/MentalHealth?retryWrites=true&w=majority&appName=BackedDB', { useNewUrlParser: true, useUnifiedTopology: true })
