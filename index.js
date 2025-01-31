@@ -41,7 +41,7 @@ const Applicant = mongoose.model('Applicant', applicantSchema);
 
 // Routes
 app.get('/signup', (req, res) => {
-    res.render('signup'); // Render 'signup.ejs' page
+    res.render('signup',); // Render 'signup.ejs' page
 });
 
 app.post('/api/applicant', async (req, res) => {
@@ -151,7 +151,7 @@ app.get('/contact-us', (req, res) => {
 // Route to get the user profile
 app.get('/user-profile', async (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/login'); // Redirect to login if user is not logged in
+        return res.redirect('/login',{ user: req.session.user }); // Redirect to login if user is not logged in
     }
 
     try {
@@ -161,12 +161,12 @@ app.get('/user-profile', async (req, res) => {
         }
 
         // Render the user profile page and pass user data to it
-        res.render('user-profile', { user });
+        res.render('user-profile', { user },{ user: req.session.user });
     } catch (error) {
         console.error('Error fetching user profile:', error);
         res.status(500).send('An error occurred while loading the profile.');
     }
-});
+},);
 app.post('/submit-quiz', async (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login');
@@ -266,7 +266,7 @@ app.get('/api/exercises', (req, res) => {
       { name: 'Box Breathing', time: 120 },
       { name: '4-7-8 Breathing', time: 120 },
     ];
-    res.render('activities', { exercises });
+    res.render('activities', { exercises },{ user: req.session.user });
   });
   const journalSchema = new mongoose.Schema({
     thought: { type: String, required: true },
@@ -287,7 +287,7 @@ const Journal = mongoose.model('Journal', journalSchema);
     }
 });
 app.get('/', (req, res) => {
-    res.render('home');
+    res.render('home',{ user: req.session.user });
 });
 
 app.post('/submit-journal', async (req, res) => {
@@ -295,10 +295,10 @@ app.post('/submit-journal', async (req, res) => {
     try {
         const journalEntry = new Journal({ thought });
         await journalEntry.save();
-        res.redirect('/journal?success=true');
+        res.redirect('/journal?success=true',{ user: req.session.user });
     } catch (error) {
         console.error('Error saving journal entry:', error);
-        res.redirect('/journal?error=true');
+        res.redirect('/journal?error=true',{ user: req.session.user });
     }
 });
 
