@@ -302,6 +302,10 @@ app.post('/submit-journal', async (req, res) => {
     }
 });
 
+app.get('/forgot-password', (req, res) => {
+    res.render('forgot-password', { user: req.session.user }); // Pass user data to the template
+});
+
 
 mongoose
     .connect('mongodb+srv://smetchappy:Egd8lV7C8J5mcymM@backeddb.pmksk.mongodb.net/MentalHealth?retryWrites=true&w=majority&appName=BackedDB', { useNewUrlParser: true, useUnifiedTopology: true })
