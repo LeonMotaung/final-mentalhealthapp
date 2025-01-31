@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -11,40 +10,49 @@ app.get('/', (req, res) => {
 })
 
 app.listen(3000, () => {
-    console.log('The server is running at port' + "3000")
+    console.log('The server is running at port 3000')
 })
 
-app.post('/api/applicant', async(req, res) => {
-    try {
-        const Applicant = await Applicant.create(req.body);
-        //we enter status 200 because it's okay
-        res.status(200).json(applicant)
+// Define the Applicant model
+const applicantSchema = new mongoose.Schema({
+    // Define schema fields here
+});
+const Applicant = mongoose.model('Applicant', applicantSchema);
 
+app.post('/api/applicant', async (req, res) => {
+    try {
+        const applicant = await Applicant.create(req.body);
+        res.status(201).json(applicant);
     } catch (error) {
-        res.status(500).json({ message: error.message })
+        console.error('Error creating applicant:', error);
+        res.status(500).json({ message: 'Failed to create applicant' });
     }
 });
 
-
 mongoose.connect("mongodb+srv://smetchappy:Egd8lV7C8J5mcymM@backeddb.pmksk.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackedDB")
-    .then(() => {
-        app.post('/login', async(req, res) => {
-            var email = request.fields.email;
-            var password = request.fields.password;
-            var user = await database.collection("users").findOne({
-                email: email
-            })
+    .then(async () => {
+        const db = mongoose.connection;
+        app.post('/login', async (req, res) => {
+            try {
+                const { email, password } = req.body;
+                const user = await db.collection("users").findOne({ email });
+                if (!user) {
+                    return res.status(404).json({ message: "Email does not exist" });
+                }
+                // Add logic for password verification and response
+                // For example, using bcrypt for password hashing
+                // const isValidPassword = await bcrypt.compare(password, user.password);
+                // if (!isValidPassword) {
+                //     return res.status(401).json({ message: "Invalid password" });
+                // }
+                // res.status(200).json({ message: "Login successful" });
+            } catch (error) {
+                console.error('Error logging in:', error);
+                res.status(500).json({ message: 'Failed to login' });
+            }
         });
-        if (user == null) {
-            request.status = "error"
-            request.message = " Email does not exist";
-            result.render("login", {
-                "request": request
-            })
-
-        }
         console.log("Connected to the database");
     })
-    .catch(() => {
-        console.log('not connnected to the database ')
-    })
+    .catch((error) => {
+        console.error('Failed to connect to the database:', error);
+    });

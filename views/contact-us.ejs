@@ -8,15 +8,65 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .cursor-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #2dd4bf;
+            pointer-events: none;
+        }
+    
+        .cursor-outline {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #0d9488;
+            pointer-events: none;
+        }
+    
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 999;
+            transition: all 0.3s ease-out;
+            mix-blend-mode: difference;
+        }
+    
+        .hover-effect:hover ~ .cursor-outline {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: rgba(45, 212, 191, 0.3);
+        }
+    
+        .cursor-particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background-color: #99f6e4;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 998;
+            animation: particle-fade 1s forwards;
+        }
+    
+        @keyframes particle-fade {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(2); }
+        }
+    </style>
 </head>
 
 <body class="font-poppins bg-teal-100 flex flex-col min-h-screen">
-
+<!-- Add these at the top of your body -->
+<div class="cursor-dot"></div>
+<div class="cursor-outline"></div>
     <!-- Top Navbar -->
     <nav class="bg-teal-600 text-white">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
-                <a href="#" class="text-xl font-semibold">Mental Health Xcellerators</a>
+                <a href="/" class="text-xl font-semibold">Mental Health Xcellerators</a>
                 <button id="navbar-toggle" class="lg:hidden text-white" aria-label="Toggle navigation">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -26,11 +76,7 @@
                     <a href="/about-us" class="hover:text-teal-200">About Us</a>
                     <a href="/contact-us" class="hover:text-teal-200">Contact Us</a>
                     <a href="/dashboard" class="hover:text-teal-200">Dashboard</a>
-                    <% if (typeof user !== 'undefined') { %>
-                        <a href="/logout" class="text-white hover:text-teal-200">Log Out</a>
-                    <% } else { %>
-                        <a href="/login" class="text-white hover:text-teal-200">Log In</a>
-                    <% } %>
+                    
                 </div>
             </div>
         </div>
@@ -106,6 +152,51 @@
         document.getElementById('navbar-toggle').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
+        });
+    </script>
+    <script>
+        // Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const particles = [];
+        
+        // Mouse Move Listener
+        window.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = `${e.clientX}px`;
+            cursorDot.style.top = `${e.clientY}px`;
+            
+            cursorOutline.animate({
+                left: `${e.clientX}px`,
+                top: `${e.clientY}px`
+            }, { duration: 500, fill: "forwards" });
+    
+            // Add particles
+            if (particles.length < 20) {
+                const particle = document.createElement('div');
+                particle.className = 'cursor-particle';
+                particle.style.left = `${e.clientX}px`;
+                particle.style.top = `${e.clientY}px`;
+                document.body.appendChild(particle);
+                particles.push(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                    particles.shift();
+                }, 1000);
+            }
+        });
+    
+        // Hover Effects
+        document.querySelectorAll('.hover-effect').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursorOutline.style.backgroundColor = 'rgba(45, 212, 191, 0.3)';
+            });
+    
+            link.addEventListener('mouseleave', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
         });
     </script>
 </body>

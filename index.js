@@ -141,11 +141,11 @@ app.get('/logout', (req, res) => {
 
 // Static pages
 app.get('/about-us', (req, res) => {
-    res.render('about-us'); // Render 'about-us.ejs'
+    res.render('about-us', { user: req.session.user }); // Pass user data to the template
 });
 
 app.get('/contact-us', (req, res) => {
-    res.render('contact-us'); // Render 'contact-us.ejs'
+    res.render('contact-us', { user: req.session.user }); // Pass user data to the template
 });
 
 // Route to get the user profile
@@ -314,7 +314,7 @@ mongoose
     })
     .catch((error) => {
         console.log('Failed to connect to the database', error);
-    });
+    })
 
 
 
