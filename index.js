@@ -81,6 +81,7 @@ app.get('/login', (req, res) => {
     const message = req.query.message || ''; // Retrieve any error message
     res.render('login', { message });
 });
+// GET Route - Forgot Password Page
 app.get('/forgot-password', (req, res) => {
     res.render('forgot-password', { 
         error: null,
@@ -89,40 +90,48 @@ app.get('/forgot-password', (req, res) => {
     });
 });
 
+// POST Route - Password Reset
 app.post('/forgot-password', async (req, res) => {
     try {
-        const user = await User.findOne({ idNumber: req.body.idNumber });
+        const user = await User.findOne({ email: req.body.email });
         
         if (!user) {
             return res.render('forgot-password', { 
-                error: 'ID Number not found',
+                error: 'Email not found',
                 message: null,
                 isLoggedIn: false 
             });
         }
 
-        // Generate a new random password
-        const newPassword = Math.random().toString(36).slice(-8);
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        // Generate temporary password
+        const tempPassword = Math.random().toString(36).slice(-8);
+        const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
-        // Update the user's password
+        // Update user's password
         await User.updateOne(
-            { idNumber: req.body.idNumber },
+            { email: req.body.email },
             { $set: { password: hashedPassword } }
         );
 
-        // You might want to send this password to the user's email here
-        // For now, we'll just show it in the response
+        // Send email with password reset instructions
+        // (You'll need to implement your email service here)
+        /*
+        await sendPasswordResetEmail({
+            email: user.email,
+            tempPassword: tempPassword
+        });
+        */
+
         res.render('forgot-password', { 
             error: null,
-            message: `New password: ${newPassword}`,
+            message: 'Password reset instructions sent to your email',
             isLoggedIn: false 
         });
 
     } catch (error) {
-        console.error('Forgot password error:', error);
+        console.error('Password reset error:', error);
         res.render('forgot-password', { 
-            error: 'An error occurred. Please try again.',
+            error: 'Error processing your request. Please try again.',
             message: null,
             isLoggedIn: false 
         });
