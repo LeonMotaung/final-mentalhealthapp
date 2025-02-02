@@ -81,6 +81,54 @@ app.get('/login', (req, res) => {
     const message = req.query.message || ''; // Retrieve any error message
     res.render('login', { message });
 });
+app.get('/forgot-password', (req, res) => {
+    res.render('forgot-password', { 
+        error: null,
+        message: null,
+        isLoggedIn: false 
+    });
+});
+
+app.post('/forgot-password', async (req, res) => {
+    try {
+        const user = await User.findOne({ idNumber: req.body.idNumber });
+        
+        if (!user) {
+            return res.render('forgot-password', { 
+                error: 'ID Number not found',
+                message: null,
+                isLoggedIn: false 
+            });
+        }
+
+        // Generate a new random password
+        const newPassword = Math.random().toString(36).slice(-8);
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update the user's password
+        await User.updateOne(
+            { idNumber: req.body.idNumber },
+            { $set: { password: hashedPassword } }
+        );
+
+        // You might want to send this password to the user's email here
+        // For now, we'll just show it in the response
+        res.render('forgot-password', { 
+            error: null,
+            message: `New password: ${newPassword}`,
+            isLoggedIn: false 
+        });
+
+    } catch (error) {
+        console.error('Forgot password error:', error);
+        res.render('forgot-password', { 
+            error: 'An error occurred. Please try again.',
+            message: null,
+            isLoggedIn: false 
+        });
+    }
+});
+
 
 // Login POST
 app.post('/login', async (req, res) => {
