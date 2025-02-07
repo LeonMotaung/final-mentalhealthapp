@@ -7,6 +7,74 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function showBankDetails() {
+          const modal = document.getElementById('bankModal');
+          modal.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+        }
+        
+        function closeBankModal() {
+          const modal = document.getElementById('bankModal');
+          modal.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        }
+        
+        function copyToClipboard(text) {
+          navigator.clipboard.writeText(text).then(() => {
+            alert('Account number copied to clipboard!');
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+          });
+        }
+        
+        function updateReference() {
+          const companyName = document.getElementById('companyName').value;
+          // You could add real-time validation here if needed
+        }
+        
+        function confirmPayment() {
+          const companyName = document.getElementById('companyName').value.trim();
+          if (!companyName) {
+            alert('Please enter your company name for the reference');
+            return;
+          }
+          
+          if (confirm(`Confirm payment with reference: ${companyName}?`)) {
+            // Here you could add AJAX call to notify your backend
+            alert('Thank you! We\'ll verify your payment within 2-3 business days.');
+            closeBankModal();
+          }
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+          const modal = document.getElementById('bankModal');
+          if (event.target === modal) {
+            closeBankModal();
+          }
+        }
+        </script>
+        
+        <style>
+        /* Add this to your existing styles */
+        .font-mono {
+          font-family: monospace;
+        }
+        
+        #bankModal {
+          backdrop-filter: blur(3px);
+        }
+        
+        #bankModal > div {
+          animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+          from { transform: translateY(-20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        </style>
     <style>
         .cursor-dot {
             width: 10px;
@@ -185,7 +253,157 @@
             </div>
         </section>
     </main>
+    <!------Sponser's setion-------->
+    <!-- Insert this after the flyer section but before the footer -->
+<section class="bg-teal-50 py-16">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold text-teal-800 mb-8">Our Valued Partners</h2>
+        
+        <!-- Sponsors Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center max-w-6xl mx-auto">
+            <!-- Sponsor 1 -->
+            <a href="https://wellnessfoundation.org" target="_blank" rel="noopener noreferrer" 
+               class="group p-4 hover:bg-teal-100 rounded-xl transition-all duration-300">
+                <img src="/images/rsa-coat-of-arms.svg" 
+                     alt="Wellness Foundation Logo" 
+                     class="h-20 w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500"
+                     loading="lazy">
+            </a>
+    
+            <!-- Sponsor 2 -->
+            <a href="https://mindcare.co.za" target="_blank" rel="noopener noreferrer"
+               class="group p-4 hover:bg-teal-100 rounded-xl transition-all duration-300">
+                <img src="https://www.fnb.co.za/_assets/images/generic/skins/00/navigation/secondary-logo/header-logo_lrg.svg?v=1726365659000" 
+                     alt="MindCare South Africa Logo"
+                     class="h-20 w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500"
+                     loading="lazy">
+            </a>
+    
+            <!-- Sponsor 3 -->
+            <a href="https://healthfirst.org.za" target="_blank" rel="noopener noreferrer"
+               class="group p-4 hover:bg-teal-100 rounded-xl transition-all duration-300">
+                <img src="https://thespargroup.com/wp-content/themes/spar/images/logo.png" 
+                     alt="Health First Initiative Logo"
+                     class="h-20 w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500"
+                     loading="lazy">
+            </a>
+    
+            <!-- Sponsor 4 -->
+            <a href="https://communitysupport.net" target="_blank" rel="noopener noreferrer"
+               class="group p-4 hover:bg-teal-100 rounded-xl transition-all duration-300">
+                <img src="https://cdn.shopify.com/s/files/1/0727/8572/3651/files/pep-logo.svg?v=1732262581" 
+                     alt="Community Support Network Logo"
+                     class="h-20 w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500"
+                     loading="lazy">
+            </a>
+        </div>
 
+        <!-- Bank Transfer Option -->
+        <div class="mt-12">
+            <p class="text-teal-600 mb-4">Want to join our mission?</p>
+            <button onclick="showBankDetails()" 
+                    class="inline-block bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors duration-200">
+                Become a Sponsor - Bank Transfer
+            </button>
+            
+            <!-- Bank Details Modal -->
+            <div id="bankModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50">
+                <div class="relative bg-white rounded-lg p-8 max-w-md mx-auto mt-20">
+                    <h3 class="text-2xl font-bold text-teal-800 mb-4">Bank Transfer Details</h3>
+                    
+                    <div class="text-left space-y-4">
+                        <div>
+                            <label class="block text-teal-600 font-medium">Bank Name:</label>
+                            <p class="font-mono bg-teal-50 p-2 rounded">First National Bank (FNB)</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-teal-600 font-medium">Account Number:</label>
+                            <div class="flex items-center justify-between bg-teal-50 p-2 rounded">
+                                <span class="font-mono">62894333162</span>
+                                <button onclick="copyToClipboard('62894333162')" 
+                                        class="text-teal-600 hover:text-teal-800">
+                                    <i class="far fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-teal-600 font-medium">Reference:</label>
+                            <input type="text" 
+                                   id="companyName" 
+                                   placeholder="Your Company Name" 
+                                   class="w-full p-2 border border-teal-200 rounded"
+                                   oninput="updateReference()">
+                            <p class="text-sm text-teal-500 mt-1">* This will appear on our bank statement</p>
+                        </div>
+                    </div>
+    
+                    <div class="mt-6 flex justify-end space-x-4">
+                        <button onclick="closeBankModal()" 
+                                class="px-4 py-2 text-teal-600 hover:text-teal-800">
+                            Close
+                        </button>
+                        <button onclick="confirmPayment()" 
+                                class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">
+                            I've Made Payment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <script>
+  // Add this script to your main page
+function showBankDetails() {
+  document.getElementById('bankModal').classList.remove('hidden');
+}
+
+function closeBankModal() {
+  document.getElementById('bankModal').classList.add('hidden');
+}
+
+async function confirmPayment() {
+  const companyName = document.getElementById('companyName').value.trim();
+  
+  if (!companyName) {
+    alert('Please enter your company name');
+    return;
+  }
+
+  try {
+    const response = await fetch('/payments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ company_name: companyName }),
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      alert('Payment recorded successfully!');
+      closeBankModal();
+      document.getElementById('companyName').value = '';
+    } else {
+      alert(data.error || 'Error recording payment');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Failed to submit payment');
+  }
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Copied to clipboard!');
+  }).catch(err => {
+    console.error('Failed to copy:', err);
+  });
+}</script>
+    
     <!-- Footer -->
     <footer class="bg-teal-600 text-white text-center py-8 mt-12">
         <div class="container mx-auto">

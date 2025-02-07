@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const app = express();
+const Payment = require('./models/Payment');
 
 app.set('view engine', 'ejs');
 
@@ -23,6 +24,21 @@ app.use(
         cookie: { secure: false }, // Set to true if using HTTPS
     })
 );
+// Delete payment route
+app.delete('/payments/:id', async (req, res) => {
+    try {
+        const payment = await Payment.findByIdAndDelete(req.params.id);
+        
+        if (!payment) {
+            return res.status(404).json({ message: 'Payment not found' });
+        }
+
+        res.json({ message: 'Payment deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 
 // MongoDB Schema
 const applicantSchema = new mongoose.Schema({
@@ -38,6 +54,54 @@ const applicantSchema = new mongoose.Schema({
 });
 
 const Applicant = mongoose.model('Applicant', applicantSchema);
+app.get('/test-payment', async (req, res) => {
+    try {
+      const testPayment = new Payment({
+        company_name: "Test Company",
+        reference: "TEST-123"
+      });
+      await testPayment.save();
+      res.send('Payment model works!');
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  });
+  // Payment routes
+app.get("/payments", async (req, res) => {
+    try {
+      const payments = await Payment.find().sort({ timestamp: -1 });
+      res.render("payments", { payments });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server Error");
+    }
+  });
+
+  
+  app.post("/payments", async (req, res) => {
+    try {
+      const { company_name } = req.body;
+      
+      if (!company_name) {
+        return res.status(400).json({ error: "Company name is required" });
+      }
+  
+      const reference = `SPONSOR-${company_name.toUpperCase().replace(/\s+/g, '-')}`;
+      const payment = new Payment({ company_name, reference });
+  
+      await payment.save();
+      res.status(201).json({ 
+        message: "Payment recorded successfully!", 
+        payment: {
+          ...payment._doc,
+          timestamp: payment.timestamp.toLocaleString()
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server Error" });
+    }
+  });
 
 // Routes
 app.get('/signup', (req, res) => {
@@ -388,7 +452,30 @@ app.post('/forgot-password', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
-
+  app.post('/create-sponsor-session', async (req, res) => {
+    try {
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [{
+          price_data: {
+            currency: 'zar',
+            product_data: {
+              name: 'Mental Health Xcellerators Sponsorship',
+            },
+            unit_amount: 500000, // R5000.00 (amount in cents)
+          },
+          quantity: 1,
+        }],
+        mode: 'payment',
+        success_url: `${process.env.DOMAIN}/success.html`,
+        cancel_url: `${process.env.DOMAIN}/cancel.html`,
+      });
+  
+      res.json({ id: session.id });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 mongoose
     .connect('mongodb+srv://smetchappy:Egd8lV7C8J5mcymM@backeddb.pmksk.mongodb.net/MentalHealth?retryWrites=true&w=majority&appName=BackedDB', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
